@@ -1,0 +1,68 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+
+class NewTask:
+    def __init__(self, driver: WebDriver, base_url: str):
+        self.driver: WebDriver = driver
+        self.actions: ActionChains = ActionChains(self.driver)
+        self.url = f"{base_url}/app/today"
+
+        # locators
+        self.btn_add_task = (By.CLASS_NAME, "plus_add_button")
+        self.content_task_list = (By.CLASS_NAME, "task_list_item__content")
+        self.txt_name = (By.XPATH, "//DIV[@aria-label='Task name']")
+        self.txt_description = (By.XPATH, "//DIV[@aria-label='Description']")
+        self.btn_create_task = (
+            By.XPATH,
+            "//BUTTON[@data-testid='task-editor-submit-button']",
+        )
+        self.btn_more_actions = (By.XPATH, "//BUTTON[@data-testid='more_menu']")
+        self.btn_delete = (
+            By.XPATH,
+            "//DIV[@data-action-hint='task-overflow-menu-delete']//DIV[contains(text(),'Delete')]",
+        )
+        self.btn_dialog_delete = (
+            By.XPATH,
+            "//BUTTON//SPAN[contains(text(), 'Delete')]/..",
+        )
+
+    # methods
+    def load(self):
+        self.driver.get(self.url)
+
+    def tap_add_task_button(self):
+        self.driver.find_element(*self.btn_add_task).click()
+
+    def create_a_task(self, name: str, description: str):
+        self.driver.find_element(*self.txt_name).send_keys(name)
+        for element in description:
+            self.driver.find_element(*self.txt_description).send_keys(element)
+        time.sleep(0.1)
+        self.driver.find_element(*self.btn_create_task).click()
+
+    def validate_task(self, name: str, description: str):
+        txt_new_task_name = (
+            By.XPATH,
+            f"//DIV[@class='task_content' and contains(text(),'{name}')]",
+        )
+        txt_new_task_description = (
+            By.XPATH,
+            f"//DIV[@class='task_description']//P[contains(text(),'{description}')]",
+        )
+        assert self.driver.find_element(*txt_new_task_name).is_displayed()
+        assert self.driver.find_element(*txt_new_task_description).is_displayed()
+
+    def delete_task(self, name: str):
+        txt_task_list_by_name = (
+            By.XPATH,
+            f"//DIV[@class='task_content' and contains(text(), '{name}')]",
+        )
+        task_list_content = self.driver.find_element(*txt_task_list_by_name)
+        self.actions.move_to_element(task_list_content).perform()
+
+        self.driver.find_element(*self.btn_more_actions).click()
+        self.driver.find_element(*self.btn_delete).click()
+        self.driver.find_element(*self.btn_dialog_delete).click()
