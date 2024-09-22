@@ -78,7 +78,7 @@ def step_delete_task(context):
 
 
 @Step("the user delete a non-existing active task")
-def step_delete_task(context):
+def step_delete_non_existing_task(context):
     context.response = delete_a_task(0)
 
 
