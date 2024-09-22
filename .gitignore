@@ -1,8 +1,22 @@
 # Environment Variables
 .env
 
-# Python Cache files
+# Byte-compiled / optimized/ DLL files
 __pycache__/
 
-# PyCharm Idea file
-.idea
+# IDE settings (optional, depending on your setup)
+.idea/
+.vscode/
+
+reports/
+
+# Poetry Lockfile
+poetry.lock
+
+# Logs
+*.log
+reports/failed_scenarios.txt
+
+# Jenkings CI/CD tools
+target/
+build/

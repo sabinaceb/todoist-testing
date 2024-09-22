@@ -30,20 +30,20 @@ class NewTask:
         )
 
     # methods
-    def load(self):
+    def load(self) -> None:
         self.driver.get(self.url)
 
-    def tap_add_task_button(self):
+    def tap_add_task_button(self) -> None:
         self.driver.find_element(*self.btn_add_task).click()
 
-    def create_a_task(self, name: str, description: str):
+    def create_a_task(self, name: str, description: str) -> None:
         self.driver.find_element(*self.txt_name).send_keys(name)
         for element in description:
             self.driver.find_element(*self.txt_description).send_keys(element)
         time.sleep(0.1)
         self.driver.find_element(*self.btn_create_task).click()
 
-    def validate_task(self, name: str, description: str):
+    def validate_task(self, name: str, description: str) -> None:
         txt_new_task_name = (
             By.XPATH,
             f"//DIV[@class='task_content' and contains(text(),'{name}')]",
@@ -55,7 +55,7 @@ class NewTask:
         assert self.driver.find_element(*txt_new_task_name).is_displayed()
         assert self.driver.find_element(*txt_new_task_description).is_displayed()
 
-    def delete_task(self, name: str):
+    def delete_task(self, name: str) -> None:
         txt_task_list_by_name = (
             By.XPATH,
             f"//DIV[@class='task_content' and contains(text(), '{name}')]",

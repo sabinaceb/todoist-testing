@@ -22,22 +22,22 @@ class ProjectPage:
         self.btn_modal_delete = (By.XPATH, "//BUTTON//SPAN[text()='Delete']/..")
 
     # methods
-    def load(self):
+    def load(self) -> None:
         self.driver.get(self.url)
 
-    def tap_add_project_button(self):
+    def tap_add_project_button(self) -> None:
         self.driver.find_element(*self.btn_my_projects).click()
         self.driver.find_element(*self.btn_add_project).click()
 
-    def create_a_project(self, name: str):
+    def create_a_project(self, name: str) -> None:
         self.driver.find_element(*self.txt_name).send_keys(name)
         self.driver.find_element(*self.btn_create_project).click()
 
-    def validate_project(self, name: str):
+    def validate_project(self, name: str) -> None:
         txt_project_name = (By.XPATH, "//H1[text()='" + name + "']")
         assert self.driver.find_element(*txt_project_name).is_displayed()
 
-    def delete_project(self):
+    def delete_project(self) -> None:
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
         self.driver.find_element(*self.btn_modal_delete).click()
