@@ -1,0 +1,27 @@
+name: Todoist Test Automation using Python
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11.8'
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        poetry install
+    - name: Run UI tests
+      run: |
+        poetry run behave ./features/ui
+    - name: Run API tests
+      run: |
+        poetry run behave ./features/api
