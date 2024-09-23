@@ -29,4 +29,6 @@ jobs:
       run: tree -a
     - name: Run API tests
       run: |
-        poetry run behave ./features/api
+        pwd
+        la -ls
+        poetry run behave features/api
