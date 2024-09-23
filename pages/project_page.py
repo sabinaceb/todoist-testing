@@ -9,7 +9,7 @@ class ProjectPage:
         self.actions: ActionChains = ActionChains(self.driver)
         self.url = f"{base_url}/app/inbox"
 
-        # locators
+        # Locators
         self.btn_my_projects = (By.XPATH, "//BUTTON[@aria-label='My projects menu']")
         self.btn_add_project = (By.XPATH, "//DIV[@aria-label='Add project']")
         self.txt_name = (By.ID, "edit_project_modal_field_name")
@@ -21,7 +21,7 @@ class ProjectPage:
         self.btn_delete = (By.XPATH, "//DIV[text()='Delete']")
         self.btn_modal_delete = (By.XPATH, "//BUTTON//SPAN[text()='Delete']/..")
 
-    # methods
+    # Methods
     def load(self) -> None:
         self.driver.get(self.url)
 
@@ -32,10 +32,6 @@ class ProjectPage:
     def create_a_project(self, name: str) -> None:
         self.driver.find_element(*self.txt_name).send_keys(name)
         self.driver.find_element(*self.btn_create_project).click()
-
-    def validate_project(self, name: str) -> None:
-        txt_project_name = (By.XPATH, "//H1[text()='" + name + "']")
-        assert self.driver.find_element(*txt_project_name).is_displayed()
 
     def delete_project(self) -> None:
         self.driver.find_element(*self.btn_more_actions).click()

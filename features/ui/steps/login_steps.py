@@ -1,8 +1,6 @@
 from behave import Step
 from config import USERNAME, PASSWORD
 
-# Login Steps
-
 
 @Step("the user navigates to the login page")  # type: ignore
 def step_navigate_to_login_page(context):
@@ -22,9 +20,13 @@ def step_login_with_invalid_credentials(context, invalid_user, password):
 
 @Step("the user should be redirected to the dashboard")  # type: ignore
 def step_verify_login_successful(context):
-    context.login_page.validate_successful_login()
+    assert context.login_page.driver.find_element(
+        *context.login_page.h1_today
+    ).is_displayed()
 
 
 @Step("the user should see an error message")  # type: ignore
 def step_verify_login_unsuccessful(context):
-    context.login_page.validate_unsuccessful_login()
+    assert context.login_page.driver.find_element(
+        *context.login_page.btn_submit
+    ).is_displayed()

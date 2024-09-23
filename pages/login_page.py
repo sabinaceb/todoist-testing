@@ -7,12 +7,13 @@ class LoginPage:
         self.driver: WebDriver = driver
         self.url = f"{base_url}/auth/login"
 
-        # locators
+        # Locators
         self.txt_username = (By.ID, "element-0")
         self.txt_password = (By.ID, "element-3")
         self.btn_submit = (By.XPATH, "//BUTTON[@type='submit']")
+        self.h1_today = (By.XPATH, "//H1[text()='Today']")
 
-    # functions
+    # Methods
     def load(self) -> None:
         self.driver.get(self.url)
 
@@ -20,9 +21,3 @@ class LoginPage:
         self.driver.find_element(*self.txt_username).send_keys(username)
         self.driver.find_element(*self.txt_password).send_keys(password)
         self.driver.find_element(*self.btn_submit).click()
-
-    def validate_unsuccessful_login(self) -> None:
-        assert self.driver.find_element(*self.btn_submit).is_displayed()
-
-    def validate_successful_login(self) -> None:
-        assert self.driver.find_element(By.XPATH, "//H1[text()='Today']").is_displayed()

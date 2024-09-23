@@ -4,13 +4,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 
-class NewTask:
+class TaskPage:
     def __init__(self, driver: WebDriver, base_url: str):
         self.driver: WebDriver = driver
         self.actions: ActionChains = ActionChains(self.driver)
         self.url = f"{base_url}/app/today"
 
-        # locators
+        # Locators
         self.btn_add_task = (By.CLASS_NAME, "plus_add_button")
         self.content_task_list = (By.CLASS_NAME, "task_list_item__content")
         self.txt_name = (By.XPATH, "//DIV[@aria-label='Task name']")
@@ -29,7 +29,7 @@ class NewTask:
             "//BUTTON//SPAN[contains(text(), 'Delete')]/..",
         )
 
-    # methods
+    # Methods
     def load(self) -> None:
         self.driver.get(self.url)
 
@@ -42,18 +42,6 @@ class NewTask:
             self.driver.find_element(*self.txt_description).send_keys(element)
         time.sleep(0.1)
         self.driver.find_element(*self.btn_create_task).click()
-
-    def validate_task(self, name: str, description: str) -> None:
-        txt_new_task_name = (
-            By.XPATH,
-            f"//DIV[@class='task_content' and contains(text(),'{name}')]",
-        )
-        txt_new_task_description = (
-            By.XPATH,
-            f"//DIV[@class='task_description']//P[contains(text(),'{description}')]",
-        )
-        assert self.driver.find_element(*txt_new_task_name).is_displayed()
-        assert self.driver.find_element(*txt_new_task_description).is_displayed()
 
     def delete_task(self, name: str) -> None:
         txt_task_list_by_name = (
