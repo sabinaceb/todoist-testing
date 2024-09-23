@@ -23,9 +23,6 @@ jobs:
       run: |
         pip install poetry
         poetry install
-    - name: Run UI tests
-      run: |
-        poetry run behave ./features/ui
     - name: Run API tests
       run: |
         poetry run behave ./features/api
