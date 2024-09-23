@@ -3,6 +3,7 @@
 
 # Byte-compiled / optimized/ DLL files
 __pycache__/
+.mypy_cache/
 
 # IDE settings (optional, depending on your setup)
 .idea/
