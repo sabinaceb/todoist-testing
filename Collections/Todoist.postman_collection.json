@@ -1,0 +1,1884 @@
+{
+	"info": {
+		"_postman_id": "116323f3-fe0f-482d-b697-dee3f4752d43",
+		"name": "Todoist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38507408"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "GET all Projects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+									"",
+									"    responseData.forEach(function(project) {",
+									"        pm.expect(project).to.have.property('id').that.is.a('string');",
+									"        pm.expect(project).to.have.property('parent_id');",
+									"        pm.expect(project).to.have.property('order').that.is.a('number');",
+									"        pm.expect(project).to.have.property('color').that.is.a('string');",
+									"        pm.expect(project).to.have.property('name').that.is.a('string');",
+									"        pm.expect(project).to.have.property('comment_count').that.is.a('number');",
+									"        pm.expect(project).to.have.property('is_shared').that.is.a('boolean');",
+									"        pm.expect(project).to.have.property('is_favorite').that.is.a('boolean');",
+									"        pm.expect(project).to.have.property('is_inbox_project').that.is.a('boolean');",
+									"        pm.expect(project).to.have.property('is_team_inbox').that.is.a('boolean');",
+									"        pm.expect(project).to.have.property('url').that.is.a('string');",
+									"        pm.expect(project).to.have.property('view_style').that.is.a('string');",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								},
+								{
+									"key": "tokenType",
+									"value": "{{vault:todoist-api:tokenType}}",
+									"type": "string"
+								},
+								{
+									"key": "createdAt",
+									"value": "{{vault:todoist-api:createdAt}}",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://todoist.com/oauth/authorize",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "fadb258fb1964410b4d01dc3f6c024ce",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "data:read",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://todoist.com/oauth/access_token",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "Todoist API",
+									"type": "string"
+								},
+								{
+									"key": "useBrowser",
+									"value": true,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE a new Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"project_id\", jsonData.id);",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(750);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.name).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.comment_count).to.exist.and.to.be.a('number');",
+									"    pm.expect(responseData.is_shared).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.is_favorite).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.is_inbox_project).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.is_team_inbox).to.exist.and.to.be.a('boolean');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-Id",
+								"value": "{{guid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Shopping List\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - CREATE a new Project with no Body Content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(750);",
+									"});",
+									"",
+									"pm.test(\"Error message on Body Response\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Name must be provided for the project creation\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-Id",
+								"value": "{{guid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET a Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.include.all.keys(",
+									"        'id', 'parent_id', 'order', 'color', 'name', 'comment_count', ",
+									"        'is_shared', 'is_favorite', 'is_inbox_project', 'is_team_inbox', ",
+									"        'url', 'view_style'",
+									"    );",
+									"});",
+									"",
+									"",
+									"pm.test(\"ID is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"ID should be a non-empty string\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Parent_id is either null or a string value\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.parent_id).to.satisfy((value) => value === null || typeof value === 'string');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - GET a Project with wrong Project ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 404\", function () {",
+									"  pm.response.to.have.status(404);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.text();",
+									"    ",
+									"    pm.expect(responseData).to.include(\"Project not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE a Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.have.property('name');",
+									"    pm.expect(responseData).to.have.property('comment_count');",
+									"    pm.expect(responseData).to.have.property('is_shared');",
+									"    pm.expect(responseData).to.have.property('is_favorite');",
+									"    pm.expect(responseData).to.have.property('is_inbox_project');",
+									"    pm.expect(responseData).to.have.property('is_team_inbox');",
+									"    pm.expect(responseData).to.have.property('view_style');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Things To Buy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - UPDATE a non existent Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fixed response status check",
+									"pm.test(\"Response status code is 404\", function () {",
+									"  pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"    const responseData = pm.response.text();",
+									"    ",
+									"    pm.expect(responseData).to.include(\"Project not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Things To Buy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE a Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.expect(pm.response.code).to.equal(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - DELETE a non existent Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.expect(pm.response.code).to.equal(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all Collaborators",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields - id, name, and email\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(collaborator) {",
+									"        pm.expect(collaborator).to.have.property('id');",
+									"        pm.expect(collaborator).to.have.property('name');",
+									"        pm.expect(collaborator).to.have.property('email');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    responseData.forEach(function(collaborator) {",
+									"        pm.expect(collaborator.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email is not in a valid format\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/{{project_id}}/collaborators",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"{{project_id}}",
+								"collaborators"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - GET Collaborators from non existent Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields - id, name, and email\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(collaborator) {",
+									"        pm.expect(collaborator).to.have.property('id');",
+									"        pm.expect(collaborator).to.have.property('name');",
+									"        pm.expect(collaborator).to.have.property('email');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    responseData.forEach(function(collaborator) {",
+									"        pm.expect(collaborator.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email is not in a valid format\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/projects/{{project_id}}/collaborators",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"projects",
+								"{{project_id}}",
+								"collaborators"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "GET Active Tasks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the task object schema\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(task) {",
+									"        pm.expect(task).to.be.an('object');",
+									"        pm.expect(task).to.have.property('id');",
+									"        pm.expect(task).to.have.property('assigner_id');",
+									"        pm.expect(task).to.have.property('assignee_id');",
+									"        pm.expect(task).to.have.property('project_id');",
+									"        pm.expect(task).to.have.property('section_id');",
+									"        pm.expect(task).to.have.property('parent_id');",
+									"        pm.expect(task).to.have.property('order');",
+									"        pm.expect(task).to.have.property('content');",
+									"        pm.expect(task).to.have.property('description');",
+									"        pm.expect(task).to.have.property('is_completed');",
+									"        pm.expect(task).to.have.property('labels');",
+									"        pm.expect(task).to.have.property('priority');",
+									"        pm.expect(task).to.have.property('comment_count');",
+									"        pm.expect(task).to.have.property('creator_id');",
+									"        pm.expect(task).to.have.property('created_at');",
+									"        pm.expect(task).to.have.property('due');",
+									"        pm.expect(task).to.have.property('url');",
+									"        pm.expect(task).to.have.property('duration');",
+									"        pm.expect(task).to.have.property('deadline');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify necessary fields are present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    ",
+									"    responseData.forEach(function(task) {",
+									"        pm.expect(task).to.include.all.keys(",
+									"            'id', ",
+									"            'project_id', ",
+									"            'content', ",
+									"            'is_completed', ",
+									"            'labels', ",
+									"            'priority', ",
+									"            'comment_count', ",
+									"            'creator_id', ",
+									"            'created_at', ",
+									"            'due', ",
+									"            'url', ",
+									"            'deadline'",
+									"        );",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE a new Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"task_id\", jsonData.id);",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.have.property('project_id');",
+									"    pm.expect(responseData).to.have.property('content');",
+									"    pm.expect(responseData).to.have.property('is_completed');",
+									"    pm.expect(responseData).to.have.property('due');",
+									"    pm.expect(responseData).to.have.property('creator_id');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{guid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Buy Milk\",\n    \"due_string\": \"tomorrow at 12:00\",\n    \"due_lang\": \"en\",\n    \"priority\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - CREATE a new Task  with no Body content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"task_id\", jsonData.id);",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 800ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(800);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('id');",
+									"    pm.expect(responseData).to.have.property('project_id');",
+									"    pm.expect(responseData).to.have.property('content');",
+									"    pm.expect(responseData).to.have.property('is_completed');",
+									"    pm.expect(responseData).to.have.property('due');",
+									"    pm.expect(responseData).to.have.property('creator_id');",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{guid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Active Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.include.all.keys('id', 'project_id', 'content', 'is_completed', 'labels', 'priority', 'comment_count', 'creator_id', 'created_at', 'due', 'url');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Due date is in a valid date format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.due.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure and data types of the response JSON schema\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.a('string');",
+									"    pm.expect(responseData.assigner_id).to.be.null;",
+									"    pm.expect(responseData.assignee_id).to.be.null;",
+									"    pm.expect(responseData.project_id).to.be.a('string');",
+									"    pm.expect(responseData.section_id).to.be.null;",
+									"    pm.expect(responseData.parent_id).to.be.null;",
+									"    pm.expect(responseData.order).to.be.a('number');",
+									"    pm.expect(responseData.content).to.be.a('string');",
+									"    pm.expect(responseData.description).to.be.a('string');",
+									"    pm.expect(responseData.is_completed).to.be.a('boolean');",
+									"    pm.expect(responseData.labels).to.be.an('array');",
+									"    pm.expect(responseData.priority).to.be.a('number');",
+									"    pm.expect(responseData.comment_count).to.be.a('number');",
+									"    pm.expect(responseData.creator_id).to.be.a('string');",
+									"    pm.expect(responseData.created_at).to.be.a('string');",
+									"    pm.expect(responseData.due).to.be.an('object');",
+									"    pm.expect(responseData.due.date).to.be.a('string');",
+									"    pm.expect(responseData.due.string).to.be.a('string');",
+									"    pm.expect(responseData.due.lang).to.be.a('string');",
+									"    pm.expect(responseData.due.is_recurring).to.be.a('boolean');",
+									"    pm.expect(responseData.due.datetime).to.be.a('string');",
+									"    pm.expect(responseData.url).to.be.a('string');",
+									"    pm.expect(responseData.duration).to.be.null;",
+									"    pm.expect(responseData.deadline).to.be.null;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - GET non existent Active Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.include.all.keys('id', 'project_id', 'content', 'is_completed', 'labels', 'priority', 'comment_count', 'creator_id', 'created_at', 'due', 'url');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Due date is in a valid date format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.due.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure and data types of the response JSON schema\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.id).to.be.a('string');",
+									"    pm.expect(responseData.assigner_id).to.be.null;",
+									"    pm.expect(responseData.assignee_id).to.be.null;",
+									"    pm.expect(responseData.project_id).to.be.a('string');",
+									"    pm.expect(responseData.section_id).to.be.null;",
+									"    pm.expect(responseData.parent_id).to.be.null;",
+									"    pm.expect(responseData.order).to.be.a('number');",
+									"    pm.expect(responseData.content).to.be.a('string');",
+									"    pm.expect(responseData.description).to.be.a('string');",
+									"    pm.expect(responseData.is_completed).to.be.a('boolean');",
+									"    pm.expect(responseData.labels).to.be.an('array');",
+									"    pm.expect(responseData.priority).to.be.a('number');",
+									"    pm.expect(responseData.comment_count).to.be.a('number');",
+									"    pm.expect(responseData.creator_id).to.be.a('string');",
+									"    pm.expect(responseData.created_at).to.be.a('string');",
+									"    pm.expect(responseData.due).to.be.an('object');",
+									"    pm.expect(responseData.due.date).to.be.a('string');",
+									"    pm.expect(responseData.due.string).to.be.a('string');",
+									"    pm.expect(responseData.due.lang).to.be.a('string');",
+									"    pm.expect(responseData.due.is_recurring).to.be.a('boolean');",
+									"    pm.expect(responseData.due.datetime).to.be.a('string');",
+									"    pm.expect(responseData.url).to.be.a('string');",
+									"    pm.expect(responseData.duration).to.be.null;",
+									"    pm.expect(responseData.deadline).to.be.null;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE a Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is in an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.id).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.project_id).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.content).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.is_completed).to.exist.and.to.be.a('boolean');",
+									"  pm.expect(responseData.priority).to.exist.and.to.be.a('number');",
+									"  pm.expect(responseData.due).to.exist.and.to.be.an('object');",
+									"  pm.expect(responseData.creator_id).to.exist.and.to.be.a('string');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{guid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Buy Coffee\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - UPDATE a non existent Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is in an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.id).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.project_id).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.content).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.is_completed).to.exist.and.to.be.a('boolean');",
+									"  pm.expect(responseData.priority).to.exist.and.to.be.a('number');",
+									"  pm.expect(responseData.due).to.exist.and.to.be.an('object');",
+									"  pm.expect(responseData.creator_id).to.exist.and.to.be.a('string');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-Id",
+								"value": "{{guid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Buy Coffee\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CLOSE a Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}",
+								"close"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - CLOSE a non existent Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}/close",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}",
+								"close"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REOPEN a Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 750ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(750);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}/reopen",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}",
+								"reopen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - REOPEN a non existent Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 750ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(750);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}/reopen",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}",
+								"reopen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE a Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negative - DELETE a non existent Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessToken",
+									"value": "{{vault:todoist-api:accessToken}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "body",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/rest/v2/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rest",
+								"v2",
+								"tasks",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"var uuid = require('uuid');",
+					"",
+					"pm.environment.set('guid', uuid.v4());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
