@@ -1,0 +1,48 @@
+name: Todoist Test Automation using Python
+
+on: [push]
+
+jobs:
+  setup-and-cache:
+    runs-on: ubuntu-latest
+    env:
+      USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
+      PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11.8'
+    - name: Install Poetry
+      run: pip install poetry
+    - name: Install Dependencies
+      run: poetry install
+    - name: Cache Python Virtual Environment
+      uses: action/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-key: |
+          ${{ runner.os }}-poetry-
+
+  execute-api-testing:
+    needs: setup-and-cache
+    runs-on: ubuntu-latest
+    env:
+      TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
+    steps:
+    - uses: action/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11.8'
+    - name: Restore Poetry Cache
+      uses: action/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-key: |
+          ${{ runner.os }}-poetry-
+    - name: Run API Test
+      run: poetry run behave features/api
