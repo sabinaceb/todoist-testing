@@ -6,8 +6,6 @@ on:
 jobs:
   api-testing:
     runs-on: ubuntu-latest
-    env:
-      TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -19,13 +17,17 @@ jobs:
         pip install poetry
         poetry install
     - name: Run API tests
+      env:
+        TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
       run: poetry run behave features/api
 
   ui-testing:
     runs-on: ubuntu-latest
-    env:
-      USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
-      PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
+    strategy:
+      matrix:
+        platform:
+          - {os: "Windows", os_version: "10", browserName: "Chrome", browser_version: "latest"}
+          - {os: "OS X", osVersion: "Monterey", browserName: "Chrome", browserVersion: "latest"}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -37,4 +39,9 @@ jobs:
         pip install poetry
         poetry install
     - name: Run API tests
-      run: poetry run behave features/ui
+      env:
+        USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
+        PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.os_version }}" -D browser="${{ matrix.platform.browser }}" -D browser_version="${{ matrix.platform.browser_version }}"
