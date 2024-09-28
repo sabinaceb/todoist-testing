@@ -3,24 +3,6 @@ name: Todoist Test Automation using Python
 on: [push]
 
 jobs:
-  execute-ui-testing:
-    runs-on: ubuntu-latest
-    env:
-      USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
-      PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.11.8'
-    - name: Install Poetry
-      run: pip install poetry
-    - name: Install Dependencies
-      run: poetry install  
-    - name: Run UI Test
-      run: poetry run behave features/api
-
   execute-api-testing:
     runs-on: ubuntu-latest
     env:
