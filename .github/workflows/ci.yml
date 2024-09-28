@@ -19,7 +19,7 @@ jobs:
     - name: Install Dependencies
       run: poetry install
     - name: Cache Python Virtual Environment
-      uses: action/cache@v2
+      uses: actions/cache@v2
       with:
         path: ~/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
@@ -38,7 +38,7 @@ jobs:
       with:
         python-version: '3.11.8'
     - name: Restore Poetry Cache
-      uses: action/cache@v2
+      uses: actions/cache@v2
       with:
         path: ~/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
