@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - {os: "Windows", os_version: "10", browserName: "Chrome", browser_version: "latest"}
+          - {os: "Windows", osVersion: "10", browserName: "Chrome", browserVersion: "latest"}
           - {os: "OS X", osVersion: "Monterey", browserName: "Chrome", browserVersion: "latest"}
     steps:
     - uses: actions/checkout@v4
@@ -45,4 +45,4 @@ jobs:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: True
-      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.os_version }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browser_version }}"
+      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}"
