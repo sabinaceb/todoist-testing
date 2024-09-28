@@ -1,6 +1,5 @@
 from config import (
     BASE_URL,
-    # BROWSER_NAME,
     BROWSERSTACK_USERNAME,
     BROWSERSTACK_KEY,
     RUN_ON_BROWSERSTACK,
@@ -16,7 +15,6 @@ from typing import Any
 def before_all(context: Any) -> None:
     if RUN_ON_BROWSERSTACK:
         # options = BaseOptions()
-        # if BROWSER_NAME == "Chrome":
         options = webdriver.ChromeOptions()
         options.set_capability("os", context.config.userdata.get("os"))
         options.set_capability("os_version", context.config.userdata.get("os_version"))
@@ -25,7 +23,9 @@ def before_all(context: Any) -> None:
             "browser_version", context.config.userdata.get("browser_version")
         )
         options.set_capability("name", "Behave UI Test on BrowserStack")
-
+        print(
+            f"https://{BROWSERSTACK_USERNAME}:{BROWSERSTACK_KEY}@hub-cloud.browserstack.com/wd/hub"
+        )
         context.driver = webdriver.Remote(
             command_executor=f"https://{BROWSERSTACK_USERNAME}:{BROWSERSTACK_KEY}@hub-cloud.browserstack.com/wd/hub",
             options=options,
