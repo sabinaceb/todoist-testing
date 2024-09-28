@@ -20,7 +20,7 @@ def before_all(context: Any) -> None:
         options = webdriver.ChromeOptions()
         options.set_capability("os", context.config.userdata.get("os"))
         options.set_capability("os_version", context.config.userdata.get("os_version"))
-        options.set_capability("browser", context.config.userdata.get("browser"))
+        # options.set_capability("browser", context.config.userdata.get("browser"))
         options.set_capability(
             "browser_version", context.config.userdata.get("browser_version")
         )
