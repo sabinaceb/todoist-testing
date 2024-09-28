@@ -1,5 +1,6 @@
 from config import (
     BASE_URL,
+    # BROWSER_NAME,
     BROWSERSTACK_USERNAME,
     BROWSERSTACK_KEY,
     RUN_ON_BROWSERSTACK,
@@ -7,23 +8,27 @@ from config import (
 from factories.page_factory import PageFactory
 
 from selenium import webdriver
+from selenium.webdriver.common.options import BaseOptions
 import time
 from typing import Any
 
 
 def before_all(context: Any) -> None:
     if RUN_ON_BROWSERSTACK:
-        desired_cap = {
-            "os": context.config.userdata.get("os"),
-            "os_version": context.config.userdata.get("os_version"),
-            "browser": context.config.userdata.get("browser"),
-            "browser_version": context.config.userdata.get("browser_version"),
-            "name": "Behave UI Test on BrowserStack",
-        }
+        options = BaseOptions()
+        # if BROWSER_NAME == "Chrome":
+        #     options = webdriver.ChromeOptions()
+        options.set_capability("os", context.config.userdata.get("os"))
+        options.set_capability("os_version", context.config.userdata.get("os_version"))
+        options.set_capability("browser", context.config.userdata.get("browser"))
+        options.set_capability(
+            "browser_version", context.config.userdata.get("browser_version")
+        )
+        options.set_capability("name", "Behave UI Test on BrowserStack")
 
         context.driver = webdriver.Remote(
             command_executor=f"https://{BROWSERSTACK_USERNAME}:{BROWSERSTACK_KEY}@hub-cloud.browserstack.com/wd/hub",
-            desired_capabilities=desired_cap,
+            options=options,
         )
     else:
         context.driver = webdriver.Chrome()
