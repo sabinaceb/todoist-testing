@@ -1,11 +1,14 @@
 name: Todoist Test Automation using Python
 
-on: [push]
-
+on:
+  [push]
+  
 jobs:
-  execute-api-testing:
+  api-testing:
     runs-on: ubuntu-latest
     env:
+      USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
+      PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
       TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
     steps:
     - uses: actions/checkout@v2
@@ -13,9 +16,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.11.8'
-    - name: Install Poetry
-      run: pip install poetry
     - name: Install Dependencies
-      run: poetry install  
-    - name: Run API Test
+      run: |
+        pip install poetry
+        poetry install
+    - name: Run API tests
       run: poetry run behave features/api
