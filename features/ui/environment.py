@@ -15,9 +15,9 @@ from typing import Any
 
 def before_all(context: Any) -> None:
     if RUN_ON_BROWSERSTACK:
-        options = BaseOptions()
+        # options = BaseOptions()
         # if BROWSER_NAME == "Chrome":
-        #     options = webdriver.ChromeOptions()
+        options = webdriver.ChromeOptions()
         options.set_capability("os", context.config.userdata.get("os"))
         options.set_capability("os_version", context.config.userdata.get("os_version"))
         options.set_capability("browser", context.config.userdata.get("browser"))
