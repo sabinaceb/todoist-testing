@@ -53,7 +53,7 @@ jobs:
         USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
         PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: "True"
       run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}"
 
