@@ -12,16 +12,19 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
     - name: Install Dependencies
       run: |
         pip install poetry
         poetry install
+        npm install -g allure-commandline
     - name: Run API tests
       env:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
       run: poetry run behave features/api -f allure_behave.formatter:AllureFormatter -o allure-results/api
-    - name: Install Allure Commandline
-      run: sudo apt-get install allure
     - name: Generate Allure report for API tests
       run: allure generate allure-results/api -o reporter/API_tests_results --clean
 
@@ -49,10 +52,15 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
     - name: Install Dependencies
       run: |
         pip install poetry
         poetry install
+        npm install -g allure-commandline
     - name: Run UI tests
       env:
         USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
@@ -61,8 +69,6 @@ jobs:
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: "True"
       run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o allure-results/ui
-    - name: Install Allure Commandline
-      run: sudo apt-get install allure
     - name: Generate Allure report for UI tests
       run: allure generate allure-results/ui -o reporter/UI_tests_results --clean
     - name: BrowserStackLocal Stop
@@ -76,7 +82,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Deploy to Github Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./allure_reporter
