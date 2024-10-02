@@ -9,15 +9,10 @@ __pycache__/
 .idea/
 .vscode/
 
-reports/
+allure-results/
 
 # Poetry Lockfile
 poetry.lock
 
 # Logs
 *.log
-reports/failed_scenarios.txt
-
-# Jenkings CI/CD tools
-target/
-build/

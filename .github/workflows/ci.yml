@@ -22,12 +22,18 @@ jobs:
         poetry install
         npm install -g allure-commandline
     - name: Run API tests
+      if: always()
       env:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
       run: poetry run behave features/api -f allure_behave.formatter:AllureFormatter -o allure-results/api
+      continue-on-error: true
     - name: Generate Allure report for API tests
-      run: allure generate allure-results/api -o reporter/API_tests_results --clean
-
+      run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }} --clean
+    - name: Deploy API test report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./reporter/api/tests_results_${{ github.sha }}
 
   ui-testing:
     runs-on: ubuntu-latest
@@ -63,6 +69,7 @@ jobs:
         poetry install
         npm install -g allure-commandline
     - name: Run UI tests
+      if: always()
       env:
         USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
         PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
@@ -70,21 +77,15 @@ jobs:
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: "True"
       run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" || true
+      continue-on-error: true
     - name: Generate Allure report for UI tests
-      run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/UI_tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}" --clean
+      run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}" --clean
+    - name: Deploy API test report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}
     - name: BrowserStackLocal Stop
       uses: browserstack/github-actions/setup-local@master
       with:
           local-testing: stop
-  
-  deploy_reporter:
-    if: always()
-    needs: [api-testing, ui-testing]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Deploy to Github Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./allure_reporter
