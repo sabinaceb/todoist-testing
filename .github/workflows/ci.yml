@@ -32,6 +32,7 @@ jobs:
   ui-testing:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         platform:
           - {os: "Windows", osVersion: "10", browserName: "Chrome", browserVersion: "latest"}
@@ -68,15 +69,16 @@ jobs:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: "True"
-      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o allure-results/ui
+      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.os_version }}-${{ matrix.platform.browser }}${{ matrix.platform.browser_version }}
     - name: Generate Allure report for UI tests
-      run: allure generate allure-results/ui -o reporter/UI_tests_results --clean
+      run: allure generate allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.os_version }}-${{ matrix.platform.browser }}${{ matrix.platform.browser_version }} -o reporter/UI_tests_results_${{ matrix.platform.os }}${{ matrix.platform.os_version }}_${{ matrix.platform.browser }}${{ matrix.platform.browser_version }} --clean
     - name: BrowserStackLocal Stop
       uses: browserstack/github-actions/setup-local@master
       with:
           local-testing: stop
   
   deploy_reporter:
+    if: always()
     needs: [api-testing, ui-testing]
     runs-on: ubuntu-latest
     steps:
