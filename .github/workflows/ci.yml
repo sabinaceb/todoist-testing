@@ -28,7 +28,7 @@ jobs:
       run: poetry run behave features/api -f allure_behave.formatter:AllureFormatter -o allure-results/api
       continue-on-error: true
     - name: Generate Allure report for API tests
-      run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }} --clean
+      run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }}
     - name: Deploy API test report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
@@ -79,7 +79,7 @@ jobs:
       run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" || true
       continue-on-error: true
     - name: Generate Allure report for UI tests
-      run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}" --clean
+      run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}"
     - name: Deploy API test report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
