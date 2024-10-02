@@ -36,7 +36,7 @@ jobs:
       matrix:
         platform:
           - {os: "Windows", osVersion: "10", browserName: "Chrome", browserVersion: "latest"}
-          - {os: "OS X", osVersion: "Monterey", browserName: "Chrome", browserVersion: "latest"}
+          - {os: "OS X", osVersion: "Sequoia", browserName: "Safari", browserVersion: "latest"}
     steps:
     - name: BrowserStack Env Setup
       uses: browserstack/github-actions/setup-env@master
@@ -69,9 +69,9 @@ jobs:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: "True"
-      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.os_version }}-${{ matrix.platform.browser }}${{ matrix.platform.browser_version }}
+      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}"
     - name: Generate Allure report for UI tests
-      run: allure generate allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.os_version }}-${{ matrix.platform.browser }}${{ matrix.platform.browser_version }} -o reporter/UI_tests_results_${{ matrix.platform.os }}${{ matrix.platform.os_version }}_${{ matrix.platform.browser }}${{ matrix.platform.browser_version }} --clean
+      run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/UI_tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}" --clean
     - name: BrowserStackLocal Stop
       uses: browserstack/github-actions/setup-local@master
       with:
