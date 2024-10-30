@@ -3,10 +3,12 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
+from pages.base_page import BasePage
 
-class TaskPage:
+
+class TaskPage(BasePage):
     def __init__(self, driver: WebDriver, base_url: str):
-        self.driver: WebDriver = driver
+        super().__init__(driver, base_url)
         self.actions: ActionChains = ActionChains(self.driver)
         self.url = f"{base_url}/app/today"
 
@@ -30,9 +32,6 @@ class TaskPage:
         )
 
     # Methods
-    def load(self) -> None:
-        self.driver.get(self.url)
-
     def click_add_task_button(self) -> None:
         self.driver.find_element(*self.btn_add_task).click()
 
