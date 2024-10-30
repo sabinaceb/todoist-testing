@@ -25,7 +25,7 @@ jobs:
       if: always()
       env:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
-      run: poetry run behave features/api -f allure_behave.formatter:AllureFormatter -o allure-results/api
+      run: poetry run behave tests/api -f allure_behave.formatter:AllureFormatter -o allure-results/api
       continue-on-error: true
     - name: Generate Allure report for API tests
       run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }}
@@ -76,7 +76,7 @@ jobs:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         RUN_ON_BROWSERSTACK: "True"
-      run: poetry run behave features/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" || true
+      run: poetry run behave tests/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" || true
       continue-on-error: true
     - name: Generate Allure report for UI tests
       run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}"
