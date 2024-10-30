@@ -43,12 +43,12 @@ class TaskPage(BasePage):
         self.driver.find_element(*self.btn_create_task).click()
 
     def delete_task(self, name: str) -> None:
-        txt_task_list_by_name = (
+        txt_task_by_name = (
             By.XPATH,
             f"//DIV[@class='task_content' and contains(text(), '{name}')]",
         )
-        task_list_content = self.driver.find_element(*txt_task_list_by_name)
-        self.actions.move_to_element(task_list_content).perform()
+        task_content = self.driver.find_element(*txt_task_by_name)
+        self.actions.move_to_element(task_content).perform()
 
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
