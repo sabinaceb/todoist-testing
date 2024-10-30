@@ -4,11 +4,11 @@ from faker import Faker
 fake = Faker()
 
 
-@Step("the user tap the new project button")  # type: ignore
-def step_tap_the_add_task_button(context):
+@Step("the user click the new project button")  # type: ignore
+def step_click_the_add_task_button(context):
     context.project_page = context.page_factory.get_page("project")
     # context.new_project_page.load()
-    context.project_page.tap_add_project_button()
+    context.project_page.click_add_project_button()
 
 
 @Step("the user create a project")  # type: ignore

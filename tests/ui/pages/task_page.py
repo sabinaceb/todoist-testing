@@ -3,10 +3,12 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
+from .base_page import BasePage
 
-class TaskPage:
+
+class TaskPage(BasePage):
     def __init__(self, driver: WebDriver, base_url: str):
-        self.driver: WebDriver = driver
+        super().__init__(driver, base_url)
         self.actions: ActionChains = ActionChains(self.driver)
         self.url = f"{base_url}/app/today"
 
@@ -30,10 +32,7 @@ class TaskPage:
         )
 
     # Methods
-    def load(self) -> None:
-        self.driver.get(self.url)
-
-    def tap_add_task_button(self) -> None:
+    def click_add_task_button(self) -> None:
         self.driver.find_element(*self.btn_add_task).click()
 
     def create_a_task(self, name: str, description: str) -> None:
@@ -44,13 +43,22 @@ class TaskPage:
         self.driver.find_element(*self.btn_create_task).click()
 
     def delete_task(self, name: str) -> None:
-        txt_task_list_by_name = (
+        txt_task_by_name = (
             By.XPATH,
             f"//DIV[@class='task_content' and contains(text(), '{name}')]",
         )
-        task_list_content = self.driver.find_element(*txt_task_list_by_name)
-        self.actions.move_to_element(task_list_content).perform()
+        task_content = self.driver.find_element(*txt_task_by_name)
+        self.actions.move_to_element(task_content).perform()
 
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
         self.driver.find_element(*self.btn_dialog_delete).click()
+
+    def new_task_name(self, name: str) -> tuple[By, str]:
+        return (By.XPATH, f"//DIV[@class='task_content' and contains(text(),'{name}')]")
+
+    def new_task_description(self, description: str) -> tuple[By, str]:
+        return (
+            By.XPATH,
+            f"//DIV[@class='task_description']//P[contains(text(),'{description}')]",
+        )
