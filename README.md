@@ -106,7 +106,7 @@ pip install poetry
 
 - Environment Variables
 
-Make sure to set a `.env` file under the Project root with the following data.
+Make sure to set a `.env` file under the Project root with the following data or as is on the `.env.sample` file.
 Don't forget to replace the data with valid information according to your personal account.
 ```txt
 USERNAME_ENV="test@email.com"
