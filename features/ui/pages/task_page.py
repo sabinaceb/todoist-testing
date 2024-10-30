@@ -3,7 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-from pages.base_page import BasePage
+from features.ui.pages.base_page import BasePage
 
 
 class TaskPage(BasePage):

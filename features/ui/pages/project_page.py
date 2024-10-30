@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 
-from pages.base_page import BasePage
+from features.ui.pages.base_page import BasePage
 
 
 class ProjectPage(BasePage):
@@ -14,7 +14,7 @@ class ProjectPage(BasePage):
         # Locators
         self.btn_my_projects = (By.XPATH, "//BUTTON[@aria-label='My projects menu']")
         self.btn_add_project = (By.XPATH, "//DIV[@aria-label='Add project']")
-        self.txt_name = (By.ID, "edit_project_modal_field_name")
+        self.txt_name = (By.ID, "element-0")
         self.btn_create_project = (By.XPATH, "//BUTTON[@type='submit']")
         self.btn_more_actions = (
             By.XPATH,
@@ -32,7 +32,7 @@ class ProjectPage(BasePage):
         self.driver.find_element(*self.txt_name).send_keys(name)
         self.driver.find_element(*self.btn_create_project).click()
 
-    def delete_project(self, name: str) -> None:
+    def delete_project(self) -> None:
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
         self.driver.find_element(*self.btn_modal_delete).click()

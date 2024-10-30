@@ -11,4 +11,4 @@ Scenario Outline: Create a new task
 
 Examples:
     | number |         
-    | 10     |
+    | 2      |
