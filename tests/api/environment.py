@@ -1,7 +1,8 @@
-from todoist_client.task_client import TaskClient
-from todoist_client.projects_client import ProjectClient
 import os
 from typing import Any
+
+from todoist_client.task_client import TaskClient
+from todoist_client.projects_client import ProjectClient
 
 
 def before_all(context: Any) -> None:

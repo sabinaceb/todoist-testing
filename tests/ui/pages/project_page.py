@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 
-from features.ui.pages.base_page import BasePage
+from .base_page import BasePage
 
 
 class ProjectPage(BasePage):

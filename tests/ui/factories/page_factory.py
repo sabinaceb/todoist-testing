@@ -1,7 +1,8 @@
-from pages.login_page import LoginPage
-from pages.task_page import TaskPage
-from pages.project_page import ProjectPage
 from selenium.webdriver.remote.webdriver import WebDriver
+
+from pages.login_page import LoginPage
+from pages.project_page import ProjectPage
+from pages.task_page import TaskPage
 
 
 class PageFactory:

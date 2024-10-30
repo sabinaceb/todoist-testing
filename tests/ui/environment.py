@@ -1,3 +1,9 @@
+from selenium import webdriver
+from selenium.webdriver.common.options import BaseOptions
+from selenium.webdriver.chrome.options import Options
+import time
+from typing import Any
+
 from config import (
     BASE_URL,
     BROWSERSTACK_USERNAME,
@@ -5,12 +11,6 @@ from config import (
     RUN_ON_BROWSERSTACK,
 )
 from factories.page_factory import PageFactory
-
-from selenium import webdriver
-from selenium.webdriver.common.options import BaseOptions
-from selenium.webdriver.chrome.options import Options
-import time
-from typing import Any
 
 
 def before_all(context: Any) -> None:
