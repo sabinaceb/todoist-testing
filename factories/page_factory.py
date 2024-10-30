@@ -10,11 +10,12 @@ class PageFactory:
         self.base_url: str = base_url
 
     def get_page(self, page_name: str) -> object:
-        if page_name == "login":
-            return LoginPage(self.driver, self.base_url)
-        elif page_name == "task":
-            return TaskPage(self.driver, self.base_url)
-        elif page_name == "project":
-            return ProjectPage(self.driver, self.base_url)
-        else:
-            raise ValueError(f"Unknown page:{page_name}")
+        match page_name:
+            case "login":
+                return LoginPage(self.driver, self.base_url)
+            case "task":
+                return TaskPage(self.driver, self.base_url)
+            case "project":
+                return ProjectPage(self.driver, self.base_url)
+            case _:
+                raise ValueError(f"Unknown page:{page_name}")
