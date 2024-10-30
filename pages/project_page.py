@@ -25,7 +25,7 @@ class ProjectPage:
     def load(self) -> None:
         self.driver.get(self.url)
 
-    def tap_add_project_button(self) -> None:
+    def click_add_project_button(self) -> None:
         self.driver.find_element(*self.btn_my_projects).click()
         self.driver.find_element(*self.btn_add_project).click()
 
@@ -33,7 +33,7 @@ class ProjectPage:
         self.driver.find_element(*self.txt_name).send_keys(name)
         self.driver.find_element(*self.btn_create_project).click()
 
-    def delete_project(self) -> None:
+    def delete_project(self, name: str) -> None:
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
         self.driver.find_element(*self.btn_modal_delete).click()

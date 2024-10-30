@@ -55,8 +55,8 @@ Scenario Outline: POST update Task
 
 
 Examples:
-    | content   | due_string     | due_lang | priority | updated_content|
-    | Buy Milk  | today at 23:59 | en       | 4        | Buy Coffe      |
+    | content   | due_string     | due_lang | priority | updated_content |
+    | Buy Milk  | today at 23:59 | en       | 4        | Buy Coffee      |
 
 @tasks
 Scenario Outline: POST update Task - Negative Scenario

@@ -33,7 +33,7 @@ class TaskPage:
     def load(self) -> None:
         self.driver.get(self.url)
 
-    def tap_add_task_button(self) -> None:
+    def click_add_task_button(self) -> None:
         self.driver.find_element(*self.btn_add_task).click()
 
     def create_a_task(self, name: str, description: str) -> None:

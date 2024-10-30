@@ -4,11 +4,11 @@ from faker import Faker
 fake = Faker()
 
 
-@Step("the user tap the add task button")  # type: ignore
-def step_tap_the_add_task_button(context):
+@Step("the user click the add task button")  # type: ignore
+def step_click_the_add_task_button(context):
     context.task_page = context.page_factory.get_page("task")
     # context.new_task_page.load()
-    context.task_page.tap_add_task_button()
+    context.task_page.click_add_task_button()
 
 
 @Step('the user create a task "{name}" "{description}"')  # type: ignore

@@ -6,7 +6,7 @@ Background:
 
 @task
 Scenario Outline: Create a new task
-    When the user tap the add task button
+    When the user click the add task button
     When the user creates "<number>" tasks
 
 Examples:

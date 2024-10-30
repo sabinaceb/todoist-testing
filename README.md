@@ -2,7 +2,7 @@
 
 ## Description
 This is a project done as part of the QA Team Onboarding Chanllenge.
-The idea is to generate a complete framework that allos to automate the webapp [`Todoist`](https://todoist.com/home).
+The idea is to generate a complete framework that allows to automate the webapp [`Todoist`](https://todoist.com/home).
 The Test Automation Framework should be able to exercise the `FrontEnd` and `BackEnd`.
 
 General goals for the whole project
