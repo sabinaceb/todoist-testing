@@ -50,25 +50,27 @@ This project was designed with the following Design Patterns
 ├── Collections # POSTMAN Collections and Test Environments
 ├── README.md
 ├── config.py
-├── factories # Path for Factory Patterns
-├── features # Path for BDD Feature and Steps
+├── tests # Test Block path for UI and API BDD Tests
 │   ├── api
 │   │   ├── environment.py
-│   │   ├── *.feature
+│   │   ├── todoist_client
+│   │   │   └── *_client.py
+│   │   ├── features
+│   │   │   └── *.feature
 │   │   └── steps
 │   │       └── *_steps.py
 │   └── ui
 │       ├── environment.py
-│       ├── *.feature
+│       ├── factories # Path for Factory Patterns
+│       ├── pages # Path for POM's
+│       │   └── *_page.py
+│       ├── features
+│       │   └── *.feature
 │       └── steps
 │           └── *_steps.py
-├── pages # Path for POM's
-│   └── *_page.py 
 ├── pyproject.toml # Poetry file where all depencencies and execution scripts are declared
-├── *reports
-└── todoist_client # Path for TODOIST API Clients
-    ├── __init__.py
-    └── *_client.py
+└── *reports
+
 ```
 
 ---
@@ -124,19 +126,19 @@ As mentioned above we described Poetry not only as dependency and packaging mana
 
 ### Running UI Test Automation
 ```bash
-poetry run behave feature/ui
+poetry run behave tests/ui
 ```
 
 ### Running API Test Automation
 ```bash
-poetry run behave feature/api
+poetry run behave tests/api
 ```
 
 ### Running from Tags
 Behave allows to integrate tags identifiers within the Gherkin Scenarios
 To execute particular scenarios within the test context make use of the flag argument as follows
 ```bash
-poetry run behave feature/api --flags=<flag_name>
+poetry run behave tests/api --flags=@<flag_name>
 ```
 
 ## Test Coverage
