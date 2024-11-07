@@ -41,16 +41,6 @@ class TaskPage(BasePage):
             f"//DIV[@class='task_description']//P[contains(text(),'{description}')]",
         )
 
-    def click_add_task_button(self) -> None:
-        self.driver.find_element(*self.btn_add_task).click()
-
-    def create_a_task(self, name: str, description: str) -> None:
-        self.driver.find_element(*self.txt_name).send_keys(name)
-        for element in description:
-            self.driver.find_element(*self.txt_description).send_keys(element)
-        time.sleep(0.1)
-        self.driver.find_element(*self.btn_create_task).click()
-
     def delete_task(self, name: str) -> None:
         txt_task_by_name = (
             By.XPATH,
@@ -62,3 +52,13 @@ class TaskPage(BasePage):
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
         self.driver.find_element(*self.btn_dialog_delete).click()
+
+    def click_add_task_button(self) -> None:
+        self.driver.find_element(*self.btn_add_task).click()
+
+    def create_a_task(self, name: str, description: str) -> None:
+        self.driver.find_element(*self.txt_name).send_keys(name)
+        for element in description:
+            self.driver.find_element(*self.txt_description).send_keys(element)
+        time.sleep(0.1)
+        self.driver.find_element(*self.btn_create_task).click()
