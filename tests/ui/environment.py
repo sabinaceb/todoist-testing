@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from typing import Any
 
-from config import (
+from user_details import (
     BASE_URL,
     BROWSERSTACK_USERNAME,
     BROWSERSTACK_KEY,

@@ -32,6 +32,15 @@ class TaskPage(BasePage):
         )
 
     # Methods
+    def new_task_name(self, name: str) -> tuple[By, str]:
+        return (By.XPATH, f"//DIV[@class='task_content' and contains(text(),'{name}')]")
+
+    def new_task_description(self, description: str) -> tuple[By, str]:
+        return (
+            By.XPATH,
+            f"//DIV[@class='task_description']//P[contains(text(),'{description}')]",
+        )
+
     def click_add_task_button(self) -> None:
         self.driver.find_element(*self.btn_add_task).click()
 
@@ -53,12 +62,3 @@ class TaskPage(BasePage):
         self.driver.find_element(*self.btn_more_actions).click()
         self.driver.find_element(*self.btn_delete).click()
         self.driver.find_element(*self.btn_dialog_delete).click()
-
-    def new_task_name(self, name: str) -> tuple[By, str]:
-        return (By.XPATH, f"//DIV[@class='task_content' and contains(text(),'{name}')]")
-
-    def new_task_description(self, description: str) -> tuple[By, str]:
-        return (
-            By.XPATH,
-            f"//DIV[@class='task_description']//P[contains(text(),'{description}')]",
-        )
