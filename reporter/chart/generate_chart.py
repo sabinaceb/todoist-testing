@@ -6,10 +6,12 @@ import matplotlib.patches as patches
 import matplotlib.lines as mlines
 from PIL import Image, ImageOps
 import sys
+import os
 
 # Constants for logo name and custom font
 LOGO_NAME = "qaband.com"
-CUSTOM_FONT = fm.FontProperties(fname="reporter/chart/font.ttf")
+pathfile = os.path.abspath("./reporter/chart/font.ttf")
+CUSTOM_FONT = fm.FontProperties(fname=pathfile)
 
 
 # Function to create legend elements
