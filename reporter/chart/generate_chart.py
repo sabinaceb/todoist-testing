@@ -9,7 +9,7 @@ import sys
 
 # Constants for logo name and custom font
 LOGO_NAME = "qaband.com"
-CUSTOM_FONT = fm.FontProperties(fname="chart/font.ttf")
+CUSTOM_FONT = fm.FontProperties(fname="reporter/chart/font.ttf")
 
 
 # Function to create legend elements
