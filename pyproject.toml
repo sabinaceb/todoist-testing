@@ -2,7 +2,7 @@
 name = "todoist-test"
 version = "0.1.0"
 description = ""
-authors = ["Sabina Cebreroz Silva <sabina.cebreroz@elektra.com.mx>"]
+authors = ["Sabina Cebreroz Silva <sabina.cebreroz@wizeline.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -13,6 +13,8 @@ python-dotenv = "^1.0.1"
 requests = "^2.32.3"
 faker = "^29.0.0"
 allure-behave = "^2.13.5"
+matplotlib = "^3.9.2"
+slack-sdk = "^3.33.4"
 
 
 [tool.poetry.group.dev.dependencies]
