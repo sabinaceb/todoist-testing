@@ -61,13 +61,13 @@ jobs:
       uses: actions/upload-artifact@v3
       continue-on-error: true
       with:
-        name: reporter/chart
+        name: chart
         path: chart.png
     - name: Download chart artifact
       uses: actions/download-artifact@v3
       continue-on-error: true
       with:
-        name: reporter/chart
+        name: chart
         path: .
     - name: Send notification to Slack
       run: |
