@@ -2,7 +2,9 @@ name: Todoist Test Automation using Python
 
 on:
   [push, pull_request]
-  
+env:
+  TEST_REPORT_URL: ${{ secrets.ALLURE_LINK }}
+  ALLURE_RESULT_DIR: target/allure-result
 jobs:
   api-testing:
     runs-on: ubuntu-latest
@@ -29,28 +31,50 @@ jobs:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
       run: poetry run behave tests/api -f allure_behave.formatter:AllureFormatter -o allure_results/api
       continue-on-error: true
-    - name: Generate Allure report for API tests
-      run: allure generate allure_results/api -o reporter/api/tests_results_${{ github.sha }}
+    - name: Load test report history
+      uses: actions/checkout@v4
+      if: always()
+      continue-on-error: true
+      with:
+        ref: master
+        path: gh-pages
+    - name: Build test report
+      uses: simple-elf/allure-report-action@v1.7
+      if: always()
+      with:
+        gh-pages: gh-pages
+        allure_history: allure-history
+        allure-results: ${{ env.ALLURE_RESULT_DIR }}
+    
+    - name: Publish test Report
+      uses: peaceiris/actions-gh-pages@v3
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: reports
+        publish_dir: allure-report
+    # - name: Generate Allure report for API tests
+    #   run: allure generate allure_results/api -o reporter/api/tests_results_${{ github.sha }}
     - name: Generate test report message for API
       id: test_report_message_api
       run: |
-        FAILED=$(jq .statistic.failed reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        FAILED=$(jq .statistic.failed allure-report/widgets/summary.json)
         echo "API_FAILED=$FAILED" >> $GITHUB_ENV
-        BROKEN=$(jq .statistic.broken reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        BROKEN=$(jq .statistic.broken allure-report/widgets/summary.json)
         echo "API_BROKEN=$BROKEN" >> $GITHUB_ENV
-        SKIPPED=$(jq .statistic.skipped reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        SKIPPED=$(jq .statistic.skipped allure-report/widgets/summary.json)
         echo "API_SKIPPED=$SKIPPED" >> $GITHUB_ENV
-        PASSED=$(jq .statistic.passed reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        PASSED=$(jq .statistic.passed allure-report/widgets/summary.json)
         echo "API_PASSED=$PASSED" >> $GITHUB_ENV
-        TOTAL=$(jq .statistic.total reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        TOTAL=$(jq .statistic.total allure-report/widgets/summary.json)
         echo "API_TOTAL=$TOTAL" >> $GITHUB_ENV
-        DURATION=$(jq .time.duration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        DURATION=$(jq .time.duration allure-report/widgets/summary.json)
         echo "API_DURATION=$DURATION" >> $GITHUB_ENV
-        MINDURATION=$(jq .time.minDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        MINDURATION=$(jq .time.minDuration allure-report/widgets/summary.json)
         echo "API_MINDURATION=$MINDURATION" >> $GITHUB_ENV
-        MAXDURATION=$(jq .time.maxDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        MAXDURATION=$(jq .time.maxDuration allure-report/widgets/summary.json)
         echo "API_MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
-        SUMDURATION=$(jq .time.sumDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
+        SUMDURATION=$(jq .time.sumDuration allure-report/widgets/summary.json)
         echo "API_SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
     - name: Generate chart
       id: generate_chart
@@ -75,7 +99,6 @@ jobs:
         SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
       run: |
         python3 reporter/chart/send_slack.py ./chart.png ${{ env.API_TOTAL }} ${{ env.API_PASSED }} ${{ env.API_FAILED }} ${{ env.API_BROKEN }} ${{ env.API_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
-    
     # - name: Deploy API test report to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v4
     #   with:
