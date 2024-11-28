@@ -28,6 +28,8 @@ jobs:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
       run: poetry run behave tests/api -f allure_behave.formatter:AllureFormatter -o reporter/api
       continue-on-error: true
+    - name: Generate Allure report for API tests
+      run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }}
     - name: Generate test report message for API
       id: test_report_message_api
       run: |
@@ -75,8 +77,7 @@ jobs:
     - name: Send notification to Slack
       run: |
         python3 reporter/chart/send_slack.py ${{ secrets.SLACK_BOT_TOKEN }} ${{ secrets.SLACK_CHAT_ID }} ./chart.png ${{ env.API_TOTAL }} ${{ env.API_PASSED }} ${{ env.API_FAILED }} ${{ env.API_BROKEN }} ${{ env.API_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
-    # - name: Generate Allure report for API tests
-    #   run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }}
+    
     # - name: Deploy API test report to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v4
     #   with:
