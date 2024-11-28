@@ -20,16 +20,17 @@ jobs:
       run: |
         pip install poetry
         poetry install
+        pip3 install matplotlib fontTools slack_sdk
         npm install -g allure-commandline
         sudo apt-get install jq
     - name: Run API tests
       if: always()
       env:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
-      run: poetry run behave tests/api -f allure_behave.formatter:AllureFormatter -o reporter/api
+      run: poetry run behave tests/api -f allure_behave.formatter:AllureFormatter -o allure_results/api
       continue-on-error: true
     - name: Generate Allure report for API tests
-      run: allure generate allure-results/api -o reporter/api/tests_results_${{ github.sha }}
+      run: allure generate allure_results/api -o reporter/api/tests_results_${{ github.sha }}
     - name: Generate test report message for API
       id: test_report_message_api
       run: |
@@ -51,12 +52,6 @@ jobs:
         echo "API_MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
         SUMDURATION=$(jq .time.sumDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
         echo "API_SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
-        echo "::set-output name=message::Tests completed. \\
-        Failed: $FAILED, \\
-        Broken: $BROKEN, \\
-        Skipped: $SKIPPED, \\
-        Passed: $PASSED, \\
-        Total: $TOTAL"
     - name: Generate chart
       id: generate_chart
       continue-on-error: true
