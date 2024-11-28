@@ -9,6 +9,8 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 # Environment variables for GitHub run details
+TOKEN = os.getenv("SLACK_BOT_TOKEN")
+CHAT_ID = os.getenv("SLACK_CHAT_ID")
 RUN_ID = os.getenv("GITHUB_RUN_ID")
 RUN_NUMBER = os.getenv("GITHUB_RUN_NUMBER")
 REPO_NAME = os.getenv("GITHUB_REPOSITORY")
@@ -170,16 +172,16 @@ def send_message_and_image_to_slack(
 
 # Main function to send photo and message to Slack
 if __name__ == "__main__":
-    token = sys.argv[1]
-    channel_id = sys.argv[2]
-    image_path = sys.argv[3]
-    total = sys.argv[4]
-    passed = sys.argv[5]
-    failed = sys.argv[6]
-    broken = sys.argv[7]
-    skipped = sys.argv[8]
-    report_link = sys.argv[9]
-    allure_report_path = sys.argv[10]
+    token = TOKEN
+    channel_id = CHAT_ID
+    image_path = sys.argv[1]
+    total = sys.argv[2]
+    passed = sys.argv[3]
+    failed = sys.argv[4]
+    broken = sys.argv[5]
+    skipped = sys.argv[6]
+    report_link = sys.argv[7]
+    allure_report_path = sys.argv[8]
 
     send_message_and_image_to_slack(
         token,

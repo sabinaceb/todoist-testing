@@ -70,8 +70,11 @@ jobs:
         name: chart
         path: .
     - name: Send notification to Slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
       run: |
-        python3 reporter/chart/send_slack.py ${{ secrets.SLACK_BOT_TOKEN }} ${{ secrets.SLACK_CHAT_ID }} ./chart.png ${{ env.API_TOTAL }} ${{ env.API_PASSED }} ${{ env.API_FAILED }} ${{ env.API_BROKEN }} ${{ env.API_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
+        python3 reporter/chart/send_slack.py ./chart.png ${{ env.API_TOTAL }} ${{ env.API_PASSED }} ${{ env.API_FAILED }} ${{ env.API_BROKEN }} ${{ env.API_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
     
     # - name: Deploy API test report to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v4
