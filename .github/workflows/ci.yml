@@ -4,7 +4,7 @@ on:
   [push, pull_request]
 env:
   TEST_REPORT_URL: ${{ secrets.ALLURE_LINK }}
-  ALLURE_RESULT_DIR: target/allure-result
+  ALLURE_RESULT_DIR: allure-results
 jobs:
   api-testing:
     runs-on: ubuntu-latest
@@ -31,18 +31,18 @@ jobs:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
       run: poetry run behave tests/api
       continue-on-error: true
-    - name: Load test report history
-      uses: actions/checkout@v4
-      if: always()
-      continue-on-error: true
-      with:
-        ref: master
-        path: gh-pages
+    # - name: Load test report history
+    #   uses: actions/checkout@v4
+    #   if: always()
+    #   continue-on-error: true
+    #   with:
+    #     ref: master
+    #     path: gh-pages
     - name: Build test report
       uses: simple-elf/allure-report-action@v1.7
       if: always()
       with:
-        gh-pages: gh-pages
+        # gh-pages: gh-pages
         allure_history: allure-history
         allure-results: ${{ env.ALLURE_RESULT_DIR }}
     - name: Publish test Report
