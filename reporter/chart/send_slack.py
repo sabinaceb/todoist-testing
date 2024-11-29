@@ -9,22 +9,10 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 # Environment variables for GitHub run details
-TOKEN = os.getenv("SLACK_BOT_TOKEN")
-CHAT_ID = os.getenv("SLACK_CHAT_ID")
 RUN_ID = os.getenv("GITHUB_RUN_ID")
 RUN_NUMBER = os.getenv("GITHUB_RUN_NUMBER")
 REPO_NAME = os.getenv("GITHUB_REPOSITORY")
 RUN_URL = f"https://github.com/{REPO_NAME}/actions/runs/{RUN_ID}"
-REPORT_URL = os.getenv("TEST_REPORT_URL")
-RESULT_DIR = os.getenv("ALLURE_RESULT_DIR")
-
-# Env containing Test Report
-TOTAL = os.getenv("TOTAL")
-FAILED = os.getenv("FAILED")
-BROKEN = os.getenv("BROKEN")
-SKIPPED = os.getenv("SKIPPED")
-PASSED = os.getenv("PASSED")
-
 
 # Maximum number of tests to report in Slack message
 MAX_TESTS_FOR_SLACK_REPORT = 7
@@ -182,16 +170,16 @@ def send_message_and_image_to_slack(
 
 # Main function to send photo and message to Slack
 if __name__ == "__main__":
-    token = TOKEN
-    channel_id = CHAT_ID
+    token = os.getenv("SLACK_BOT_TOKEN")
+    channel_id = os.getenv("SLACK_CHAT_ID")
     image_path = sys.argv[1]
-    total = TOTAL
-    passed = PASSED
-    failed = FAILED
-    broken = BROKEN
-    skipped = SKIPPED
-    report_link = REPORT_URL
-    allure_report_path = RESULT_DIR
+    total = os.getenv("TOTAL")
+    passed = os.getenv("PASSED")
+    failed = os.getenv("FAILED")
+    broken = os.getenv("BROKEN")
+    skipped = os.getenv("SKIPPED")
+    report_link = os.getenv("TEST_REPORT_URL")
+    allure_report_path = os.getenv("ALLURE_RESULT_DIR")
 
     send_message_and_image_to_slack(
         token,
