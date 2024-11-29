@@ -47,11 +47,12 @@ This project was designed with the following Design Patterns
 ### Project Structure
 ```md
 .
-├── Collections # POSTMAN Collections and Test Environments
+
 ├── README.md
 ├── config.py
 ├── tests # Test Block path for UI and API BDD Tests
 │   ├── api
+|   |   ├── Postman Collections # POSTMAN Collections and Test Environments
 │   │   ├── environment.py
 │   │   ├── todoist_client
 │   │   │   └── *_client.py

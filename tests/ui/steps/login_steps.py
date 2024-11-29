@@ -1,5 +1,5 @@
 from behave import Step
-from config import USERNAME, PASSWORD
+from user_details import USERNAME, PASSWORD
 
 
 @Step("the user navigates to the login page")  # type: ignore
