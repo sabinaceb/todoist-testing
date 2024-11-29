@@ -14,17 +14,12 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    # - name: Set up Node.js
-    #   uses: actions/setup-node@v4
-    #   with:
-    #     node-version: 'latest'
     - name: Install Dependencies
       run: |
         pip install poetry
-        poetry install
+        poetry install --no-root
         pip3 install matplotlib fontTools slack_sdk
         sudo apt-get install jq
-    # npm install -g allure-commandline
     - name: Run API tests
       if: always()
       env:
@@ -52,8 +47,6 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: reports
         publish_dir: allure-report
-    # - name: Generate Allure report for API tests
-    #   run: allure generate allure_results/api -o reporter/api/tests_results_${{ github.sha }}
     - name: Generate test report message for API
       id: test_report_message_api
       run: |
