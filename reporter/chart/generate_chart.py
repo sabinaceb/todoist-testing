@@ -213,11 +213,11 @@ def generate_chart(total, passed, failed, broken, skipped, sum_duration):
 
 # Main function to generate chart
 if __name__ == "__main__":
-    total = int(sys.argv[1])
-    passed = int(sys.argv[2])
-    failed = int(sys.argv[3])
-    broken = int(sys.argv[4])
-    skipped = int(sys.argv[5])
-    sum_duration = int(sys.argv[6])
+    total = os.getenv("TOTAL")  # int(sys.argv[1])
+    passed = os.getenv("PASSED")  # int(sys.argv[2])
+    failed = os.getenv("FAILED")  # int(sys.argv[3])
+    broken = os.getenv("BROKEN")  # int(sys.argv[4])
+    skipped = os.getenv("SKIPPED")  # int(sys.argv[5])
+    sum_duration = os.getenv("SUMDURATION")  # int(sys.argv[6])
 
     generate_chart(total, passed, failed, broken, skipped, sum_duration)

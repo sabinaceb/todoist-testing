@@ -49,28 +49,28 @@ jobs:
       id: test_report_message_api
       run: |
         FAILED=$(jq .statistic.failed allure-report/widgets/summary.json)
-        echo "$FAILED" >> $GITHUB_ENV
+        echo "FAILED=$FAILED" >> $GITHUB_ENV
         BROKEN=$(jq .statistic.broken allure-report/widgets/summary.json)
-        echo "$BROKEN" >> $GITHUB_ENV
+        echo "BROKEN=$BROKEN" >> $GITHUB_ENV
         SKIPPED=$(jq .statistic.skipped allure-report/widgets/summary.json)
-        echo "$SKIPPED" >> $GITHUB_ENV
+        echo "SKIPPED=$SKIPPED" >> $GITHUB_ENV
         PASSED=$(jq .statistic.passed allure-report/widgets/summary.json)
-        echo "$PASSED" >> $GITHUB_ENV
+        echo "PASSED=$PASSED" >> $GITHUB_ENV
         TOTAL=$(jq .statistic.total allure-report/widgets/summary.json)
-        echo "$TOTAL" >> $GITHUB_ENV
+        echo "TOTAL=$TOTAL" >> $GITHUB_ENV
         DURATION=$(jq .time.duration allure-report/widgets/summary.json)
-        echo "$DURATION" >> $GITHUB_ENV
+        echo "DURATION=$DURATION" >> $GITHUB_ENV
         MINDURATION=$(jq .time.minDuration allure-report/widgets/summary.json)
-        echo "$MINDURATION" >> $GITHUB_ENV
+        echo "MINDURATION=$MINDURATION" >> $GITHUB_ENV
         MAXDURATION=$(jq .time.maxDuration allure-report/widgets/summary.json)
-        echo "$MAXDURATION" >> $GITHUB_ENV
+        echo "MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
         SUMDURATION=$(jq .time.sumDuration allure-report/widgets/summary.json)
-        echo "$SUMDURATION" >> $GITHUB_ENV
+        echo "SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
     - name: Generate chart
       id: generate_chart
       continue-on-error: true
       run: |
-        python3 reporter/chart/generate_chart.py ${TOTAL} ${PASSED} ${FAILED} ${BROKEN} ${SKIPPED} ${DURATION}
+        python3 reporter/chart/generate_chart.py
     - name: Upload chart as artifact
       uses: actions/upload-artifact@v3
       continue-on-error: true
