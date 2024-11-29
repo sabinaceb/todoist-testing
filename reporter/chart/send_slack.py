@@ -15,6 +15,16 @@ RUN_ID = os.getenv("GITHUB_RUN_ID")
 RUN_NUMBER = os.getenv("GITHUB_RUN_NUMBER")
 REPO_NAME = os.getenv("GITHUB_REPOSITORY")
 RUN_URL = f"https://github.com/{REPO_NAME}/actions/runs/{RUN_ID}"
+REPORT_URL = os.getenv("TEST_REPORT_URL")
+RESULT_DIR = os.getenv("ALLURE_RESULT_DIR")
+
+# Env containing Test Report
+TOTAL = os.getenv("TOTAL")
+FAILED = os.getenv("FAILED")
+BROKEN = os.getenv("BROKEN")
+SKIPPED = os.getenv("SKIPPED")
+PASSED = os.getenv("PASSED")
+
 
 # Maximum number of tests to report in Slack message
 MAX_TESTS_FOR_SLACK_REPORT = 7
@@ -175,13 +185,13 @@ if __name__ == "__main__":
     token = TOKEN
     channel_id = CHAT_ID
     image_path = sys.argv[1]
-    total = sys.argv[2]
-    passed = sys.argv[3]
-    failed = sys.argv[4]
-    broken = sys.argv[5]
-    skipped = sys.argv[6]
-    report_link = sys.argv[7]
-    allure_report_path = sys.argv[8]
+    total = TOTAL
+    passed = PASSED
+    failed = FAILED
+    broken = BROKEN
+    skipped = SKIPPED
+    report_link = REPORT_URL
+    allure_report_path = RESULT_DIR
 
     send_message_and_image_to_slack(
         token,

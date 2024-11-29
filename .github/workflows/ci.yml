@@ -19,7 +19,6 @@ jobs:
         pip install poetry
         poetry install --no-root
         pip3 install matplotlib fontTools slack_sdk
-    # sudo apt-get install jq
     - name: Run API tests
       if: always()
       env:
@@ -37,7 +36,6 @@ jobs:
       uses: simple-elf/allure-report-action@master
       if: always()
       with:
-        # gh-pages: gh-pages
         allure_history: allure-history
         allure-results: ${{ env.ALLURE_RESULT_DIR }}
     - name: Publish test Report
@@ -87,10 +85,10 @@ jobs:
         path: .
     - name: Send notification to Slack
       env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
       run: |
-        python3 reporter/chart/send_slack.py ./chart.png ${{ env.API_TOTAL }} ${{ env.API_PASSED }} ${{ env.API_FAILED }} ${{ env.API_BROKEN }} ${{ env.API_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
+        python3 reporter/chart/send_slack.py ./chart.png
    
 
 
