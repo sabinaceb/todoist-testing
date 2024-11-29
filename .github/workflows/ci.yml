@@ -29,7 +29,7 @@ jobs:
       if: always()
       env:
         TODOIST_API_TOKEN: ${{ secrets.TODOIST_API_TOKEN }}
-      run: poetry run behave tests/api -f allure_behave.formatter:AllureFormatter -o allure_results/api
+      run: poetry run behave tests/api
       continue-on-error: true
     - name: Load test report history
       uses: actions/checkout@v4
@@ -45,7 +45,6 @@ jobs:
         gh-pages: gh-pages
         allure_history: allure-history
         allure-results: ${{ env.ALLURE_RESULT_DIR }}
-    
     - name: Publish test Report
       uses: peaceiris/actions-gh-pages@v3
       if: always()
