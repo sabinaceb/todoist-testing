@@ -49,28 +49,28 @@ jobs:
       id: test_report_message_api
       run: |
         FAILED=$(jq .statistic.failed allure-report/widgets/summary.json)
-        echo "API_FAILED=$FAILED" >> $GITHUB_ENV
+        echo "$FAILED" >> $GITHUB_ENV
         BROKEN=$(jq .statistic.broken allure-report/widgets/summary.json)
-        echo "API_BROKEN=$BROKEN" >> $GITHUB_ENV
+        echo "$BROKEN" >> $GITHUB_ENV
         SKIPPED=$(jq .statistic.skipped allure-report/widgets/summary.json)
-        echo "API_SKIPPED=$SKIPPED" >> $GITHUB_ENV
+        echo "$SKIPPED" >> $GITHUB_ENV
         PASSED=$(jq .statistic.passed allure-report/widgets/summary.json)
-        echo "API_PASSED=$PASSED" >> $GITHUB_ENV
+        echo "$PASSED" >> $GITHUB_ENV
         TOTAL=$(jq .statistic.total allure-report/widgets/summary.json)
-        echo "API_TOTAL=$TOTAL" >> $GITHUB_ENV
+        echo "$TOTAL" >> $GITHUB_ENV
         DURATION=$(jq .time.duration allure-report/widgets/summary.json)
-        echo "API_DURATION=$DURATION" >> $GITHUB_ENV
+        echo "$DURATION" >> $GITHUB_ENV
         MINDURATION=$(jq .time.minDuration allure-report/widgets/summary.json)
-        echo "API_MINDURATION=$MINDURATION" >> $GITHUB_ENV
+        echo "$MINDURATION" >> $GITHUB_ENV
         MAXDURATION=$(jq .time.maxDuration allure-report/widgets/summary.json)
-        echo "API_MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
+        echo "$MAXDURATION" >> $GITHUB_ENV
         SUMDURATION=$(jq .time.sumDuration allure-report/widgets/summary.json)
-        echo "API_SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
+        echo "$SUMDURATION" >> $GITHUB_ENV
     - name: Generate chart
       id: generate_chart
       continue-on-error: true
       run: |
-        python3 reporter/chart/generate_chart.py ${API_TOTAL} ${API_PASSED} ${API_FAILED} ${API_BROKEN} ${API_SKIPPED} ${API_DURATION}
+        python3 reporter/chart/generate_chart.py ${TOTAL} ${PASSED} ${FAILED} ${BROKEN} ${SKIPPED} ${DURATION}
     - name: Upload chart as artifact
       uses: actions/upload-artifact@v3
       continue-on-error: true
