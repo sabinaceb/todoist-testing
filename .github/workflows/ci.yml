@@ -89,135 +89,115 @@ jobs:
         SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
       run: |
         python3 reporter/chart/send_slack.py ./chart.png
-   
 
-
-  # ui-testing:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       platform:
-  #         - {os: "Windows", osVersion: "10", browserName: "Chrome", browserVersion: "latest"}
-  #         - {os: "OS X", osVersion: "Sequoia", browserName: "Safari", browserVersion: "latest"}
-  #   steps:
-  #   - name: BrowserStack Env Setup
-  #     uses: browserstack/github-actions/setup-env@master
-  #     with:
-  #       username: ${{ secrets.BROWSERSTACK_USERNAME }}
-  #       access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-  #   - name: BrowserStack Local Tunnel Setup
-  #     uses: browserstack/github-actions/setup-local@master
-  #     with:
-  #       local-testing: start
-  #       local-identifier: random
-  #   - uses: actions/checkout@v4
-  #   - name: Set up Python
-  #     uses: actions/setup-python@v5
-  #     with:
-  #       python-version: '3.11'
-  #   - name: Set up Node.js
-  #     uses: actions/setup-node@v4
-  #     with:
-  #       node-version: 'latest'
-  #   - name: Install Dependencies
-  #     run: |
-  #       pip install poetry
-  #       poetry install
-  #       npm install -g allure-commandline
-  #   - name: Run UI tests
-  #     if: always()
-  #     env:
-  #       USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
-  #       PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
-  #       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-  #       BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-  #       RUN_ON_BROWSERSTACK: "True"
-  #     run: poetry run behave tests/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" -f allure_behave.formatter:AllureFormatter -o "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" || true
-  #     continue-on-error: true
-  #   # - name: Generate Allure report for UI tests
-  #   #   run: allure generate "allure-results/ui-${{ matrix.platform.os }}${{ matrix.platform.browserName }}" -o "reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}"
-  #   # - name: Deploy API test report to GitHub Pages
-  #   #   uses: peaceiris/actions-gh-pages@v4
-  #   #   with:
-  #   #     github_token: ${{ secrets.GITHUB_TOKEN }}
-  #   #     publish_dir: .reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}
-  #   - name: BrowserStackLocal Stop
-  #     uses: browserstack/github-actions/setup-local@master
-  #     with:
-  #         local-testing: stop
-
-  # statistics-and-notifications:
-  #   needs: [api-testing, ui-testing]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Install jq
-  #       run: sudo apt-get install jq
-  #     - name: Generate test report message for API
-  #       id: test_report_message_api
-        # run: |
-        #   FAILED=$(jq .statistic.failed reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_FAILED=$FAILED" >> $GITHUB_ENV
-        #   BROKEN=$(jq .statistic.broken reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_BROKEN=$BROKEN" >> $GITHUB_ENV
-        #   SKIPPED=$(jq .statistic.skipped reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_SKIPPED=$SKIPPED" >> $GITHUB_ENV
-        #   PASSED=$(jq .statistic.passed reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_PASSED=$PASSED" >> $GITHUB_ENV
-        #   TOTAL=$(jq .statistic.total reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_TOTAL=$TOTAL" >> $GITHUB_ENV
-        #   DURATION=$(jq .time.duration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_DURATION=$DURATION" >> $GITHUB_ENV
-        #   MINDURATION=$(jq .time.minDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_MINDURATION=$MINDURATION" >> $GITHUB_ENV
-        #   MAXDURATION=$(jq .time.maxDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
-        #   SUMDURATION=$(jq .time.sumDuration reporter/api/tests_results_${{ github.sha }}/widgets/summary.json)
-        #   echo "API_SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
-      # - name: Generate test report message for UI
-      #   id: test_report_message_ui
-      #   run: |
-      #     FAILED=$(jq .statistic.failed reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_FAILED=$FAILED" >> $GITHUB_ENV
-      #     BROKEN=$(jq .statistic.broken reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_BROKEN=$BROKEN" >> $GITHUB_ENV
-      #     SKIPPED=$(jq .statistic.skipped reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_SKIPPED=$SKIPPED" >> $GITHUB_ENV
-      #     PASSED=$(jq .statistic.passed reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_PASSED=$PASSED" >> $GITHUB_ENV
-      #     TOTAL=$(jq .statistic.total reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_TOTAL=$TOTAL" >> $GITHUB_ENV
-      #     DURATION=$(jq .time.duration reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_DURATION=$DURATION" >> $GITHUB_ENV
-      #     MINDURATION=$(jq .time.minDuration reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_MINDURATION=$MINDURATION" >> $GITHUB_ENV
-      #     MAXDURATION=$(jq .time.maxDuration reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
-      #     SUMDURATION=$(jq .time.sumDuration reporter/ui/tests_results_${{ matrix.platform.os }}${{ matrix.platform.browserName }}_${{ github.sha }}/widgets/summary.json)
-      #     echo "UI_SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
-      # # - name: Install Python and required packages
-      # #   run: |
-      # #     sudo apt-get install python3 python3-pip
-      # #     pip3 install matplotlib fontTools requests slack_sdk
-      # - name: Generate chart
-      #   id: generate_chart
-      #   continue-on-error: true
-      #   run: |
-      #     python3 reporter/chart/generate_chart.py ${API_TOTAL} ${API_PASSED} ${API_FAILED} ${API_BROKEN} ${API_SKIPPED} ${API_DURATION}
-      #     python3 reporter/chart/generate_chart.py ${UI_TOTAL} ${UI_PASSED} ${UI_FAILED} ${UI_BROKEN} ${UI_SKIPPED} ${UI_DURATION}
-      # - name: Upload chart as artifact
-      #   uses: actions/upload-artifact@v3
-      #   continue-on-error: true
-      #   with:
-      #     name: chart
-      #     path: chart.png
-      # - name: Download chart artifact
-      #   uses: actions/download-artifact@v3
-      #   continue-on-error: true
-      #   with:
-      #     name: chart
-      #     path: .
-      # - name: Send notification to Slack
-      #   run: |
-      #     python3 reporter/chart/send_slack.py ${{ secrets.SLACK_BOT_TOKEN }} ${{ secrets.SLACK_CHAT_ID }} ./chart.png ${{ env.API_TOTAL }} ${{ env.API_PASSED }} ${{ env.API_FAILED }} ${{ env.API_BROKEN }} ${{ env.API_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
-      #     python3 reporter/chart/send_slack.py ${{ secrets.SLACK_BOT_TOKEN }} ${{ secrets.SLACK_CHAT_ID }} ./chart.png ${{ env.UI_TOTAL }} ${{ env.UI_PASSED }} ${{ env.UI_FAILED }} ${{ env.UI_BROKEN }} ${{ env.UI_SKIPPED }} ${{ env.TEST_REPORT_URL }} ${{ env.ALLURE_RESULT_DIR }}
+  ui-testing:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - {os: "Windows", osVersion: "10", browserName: "Chrome", browserVersion: "latest"}
+          - {os: "OS X", osVersion: "Sequoia", browserName: "Safari", browserVersion: "latest"}
+    steps:
+    - name: BrowserStack Env Setup
+      uses: browserstack/github-actions/setup-env@master
+      with:
+        username: ${{ secrets.BROWSERSTACK_USERNAME }}
+        access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+    - name: BrowserStack Local Tunnel Setup
+      uses: browserstack/github-actions/setup-local@master
+      with:
+        local-testing: start
+        local-identifier: random
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    # - name: Set up Node.js
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: 'latest'
+    - name: Install Dependencies
+      run: |
+        pip install poetry
+        poetry install --no-root
+    # npm install -g allure-commandline
+    - name: Run UI tests
+      if: always()
+      env:
+        USERNAME_ENV: ${{ secrets.TODOIST_USERNAME }}
+        PASSWORD_ENV: ${{ secrets.TODOIST_PASSWORD }}
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        RUN_ON_BROWSERSTACK: "True"
+      run: poetry run behave tests/ui -D os="${{ matrix.platform.os }}" -D os_version="${{ matrix.platform.osVersion }}" -D browser="${{ matrix.platform.browserName }}" -D browser_version="${{ matrix.platform.browserVersion }}" || true
+      continue-on-error: true
+    - name: Load test report history
+      uses: actions/checkout@v4
+      if: always()
+      continue-on-error: true
+      with:
+        ref: reports
+        path: reports
+    - name: Build test report
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      with:
+        allure_history: allure-history
+        allure-results: ${{ env.ALLURE_RESULT_DIR }}
+    - name: Publish test Report
+      uses: peaceiris/actions-gh-pages@v3
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: reports
+        publish_dir: allure-history
+    - name: Generate test report message for UI
+      id: test_report_message_ui
+      run: |
+        FAILED=$(jq .statistic.failed allure-report/widgets/summary.json)
+        echo "FAILED=$FAILED" >> $GITHUB_ENV
+        BROKEN=$(jq .statistic.broken allure-report/widgets/summary.json)
+        echo "BROKEN=$BROKEN" >> $GITHUB_ENV
+        SKIPPED=$(jq .statistic.skipped allure-report/widgets/summary.json)
+        echo "SKIPPED=$SKIPPED" >> $GITHUB_ENV
+        PASSED=$(jq .statistic.passed allure-report/widgets/summary.json)
+        echo "PASSED=$PASSED" >> $GITHUB_ENV
+        TOTAL=$(jq .statistic.total allure-report/widgets/summary.json)
+        echo "TOTAL=$TOTAL" >> $GITHUB_ENV
+        DURATION=$(jq .time.duration allure-report/widgets/summary.json)
+        echo "DURATION=$DURATION" >> $GITHUB_ENV
+        MINDURATION=$(jq .time.minDuration allure-report/widgets/summary.json)
+        echo "MINDURATION=$MINDURATION" >> $GITHUB_ENV
+        MAXDURATION=$(jq .time.maxDuration allure-report/widgets/summary.json)
+        echo "MAXDURATION=$MAXDURATION" >> $GITHUB_ENV
+        SUMDURATION=$(jq .time.sumDuration allure-report/widgets/summary.json)
+        echo "SUMDURATION=$SUMDURATION" >> $GITHUB_ENV
+        - name: Generate chart
+        id: generate_chart
+        continue-on-error: true
+        run: |
+          python3 reporter/chart/generate_chart.py
+    - name: Upload chart as artifact
+      uses: actions/upload-artifact@v3
+      continue-on-error: true
+      with:
+        name: chart
+        path: chart.png
+    - name: Download chart artifact
+      uses: actions/download-artifact@v3
+      continue-on-error: true
+      with:
+        name: chart
+        path: .
+    - name: Send notification to Slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
+      run: |
+        python3 reporter/chart/send_slack.py ./chart.png
+    - name: BrowserStackLocal Stop
+      uses: browserstack/github-actions/setup-local@master
+      with:
+          local-testing: stop
