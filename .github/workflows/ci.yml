@@ -75,7 +75,7 @@ jobs:
       uses: actions/upload-artifact@v3
       continue-on-error: true
       with:
-        name: chart
+        name: chart_api
         path: chart.png
     - name: Download chart artifact
       uses: actions/download-artifact@v3
@@ -179,7 +179,7 @@ jobs:
       uses: actions/upload-artifact@v3
       continue-on-error: true
       with:
-        name: chart
+        name: chart_ui_${{ matrix.platform.os }}
         path: chart.png
     - name: Download chart artifact
       uses: actions/download-artifact@v3
