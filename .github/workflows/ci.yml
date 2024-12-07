@@ -81,14 +81,14 @@ jobs:
       uses: actions/download-artifact@v3
       continue-on-error: true
       with:
-        name: chart
+        name: chart_api
         path: .
     - name: Send notification to Slack
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
       run: |
-        python3 reporter/chart/send_slack.py ./chart.png
+        python3 reporter/chart/send_slack.py ./chart_api.png
 
   ui-testing:
     runs-on: ubuntu-latest
@@ -185,14 +185,14 @@ jobs:
       uses: actions/download-artifact@v3
       continue-on-error: true
       with:
-        name: chart
+        name: chart_ui_${{ matrix.platform.os }}
         path: .
     - name: Send notification to Slack
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         SLACK_CHAT_ID: ${{ secrets.SLACK_CHAT_ID }}
       run: |
-        python3 reporter/chart/send_slack.py ./chart.png
+        python3 reporter/chart/send_slack.py ./chart_ui_${{ matrix.platform.os }}.png
     - name: BrowserStackLocal Stop
       uses: browserstack/github-actions/setup-local@master
       with:
